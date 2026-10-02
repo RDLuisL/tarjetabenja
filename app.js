@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
      DETENER VIDEO Y AUDIO
   ===================================== */
 
-  function detenerVideoBenjamin() {
+  function detenerVideoNelson() {
 
     // Invalidar intentos anteriores.
     playbackAttempt++;
@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
      INICIAR VIDEO Y AUDIO
   ===================================== */
 
-  async function iniciarVideoBenjamin() {
+  async function iniciarVideoNelson() {
 
     if (!birthdayVideo || !birthdayAudio) {
       return;
@@ -178,7 +178,7 @@ document.addEventListener("DOMContentLoaded", () => {
           card.classList.contains("open") &&
           currentPage === videoPageIndex
         ) {
-          iniciarVideoBenjamin();
+          iniciarVideoNelson();
         }
 
       }
@@ -283,7 +283,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Detener multimedia al salir
     // de la página 4.
     if (index !== videoPageIndex) {
-      detenerVideoBenjamin();
+      detenerVideoNelson();
     }
 
     currentPage = index;
@@ -312,7 +312,7 @@ document.addEventListener("DOMContentLoaded", () => {
       index === videoPageIndex &&
       card.classList.contains("open")
     ) {
-      iniciarVideoBenjamin();
+      iniciarVideoNelson();
     }
   }
 
@@ -347,7 +347,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function closeCard() {
 
-    detenerVideoBenjamin();
+    detenerVideoNelson();
 
     card.classList.remove("open");
 
