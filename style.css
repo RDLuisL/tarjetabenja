@@ -1,0 +1,1123 @@
+
+/* =========================================
+   FUENTES
+========================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Luckiest+Guy&family=Nunito+Sans:wght@400;600;700;800;900&display=swap');
+
+
+/* =========================================
+   VARIABLES
+========================================= */
+
+:root {
+  --blue-dark: #04142f;
+  --blue-deep: #06295f;
+  --blue-main: #1254b5;
+  --blue-bright: #2979e8;
+  --blue-light: #91c5ff;
+
+  --white: #ffffff;
+  --text-light: #f4f9ff;
+}
+
+
+/* =========================================
+   RESET
+========================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 10px 6px;
+
+  background:
+    radial-gradient(
+      circle at 20% 15%,
+      rgba(41,121,232,0.35),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 85% 80%,
+      rgba(16,77,170,0.30),
+      transparent 35%
+    ),
+    linear-gradient(
+      145deg,
+      #010712,
+      #04152f 45%,
+      #082d66 100%
+    );
+
+  font-family: 'Nunito Sans', Arial, sans-serif;
+
+  overflow-x: hidden;
+}
+
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+
+/* =========================================
+   CONTENEDOR GENERAL
+========================================= */
+
+.card-wrapper {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* =========================================
+   TARJETA PRINCIPAL
+========================================= */
+
+.card {
+  --card-width: 320px;
+  --card-height: 560px;
+
+  position: relative;
+
+  width: var(--card-width);
+  height: var(--card-height);
+
+  background: var(--blue-dark);
+  border: none;
+  border-radius: 7px;
+
+  transform-style: preserve-3d;
+  transform: perspective(1800px);
+
+  box-shadow:
+    inset 320px 0 60px rgba(0,0,0,0.48),
+    0 25px 65px rgba(0,0,0,0.50);
+
+  transition:
+    transform 0.8s ease,
+    box-shadow 0.8s ease;
+
+  touch-action: pan-y;
+}
+
+
+/* =========================================
+   TARJETA ABIERTA
+========================================= */
+
+.card.open {
+  transform:
+    perspective(1800px)
+    rotateZ(0.5deg)
+    scale(1.01);
+
+  box-shadow:
+    inset 18px 0 45px rgba(0,0,0,0.12),
+    0 30px 75px rgba(0,0,0,0.52);
+}
+
+
+/* =========================================
+   EFECTO LIBRO
+========================================= */
+
+.card::before {
+  content: '';
+
+  position: absolute;
+
+  top: -5px;
+  left: 0;
+
+  width: 100%;
+  height: 5px;
+
+  background: #1453a8;
+
+  transform: skewX(-45deg);
+  transform-origin: bottom;
+}
+
+.card::after {
+  content: '';
+
+  position: absolute;
+
+  top: 0;
+  right: -5px;
+
+  width: 5px;
+  height: 100%;
+
+  background: #020b19;
+
+  transform: skewY(-45deg);
+  transform-origin: left;
+}
+
+
+/* =========================================
+   PORTADA
+========================================= */
+
+.imgBox {
+  position: absolute;
+  inset: 0;
+
+  z-index: 20;
+
+  transform-origin: left center;
+  transform-style: preserve-3d;
+
+  transition:
+    transform 0.9s
+    cubic-bezier(0.77,0,0.175,1);
+}
+
+/* Portada abierta */
+
+.card.open .imgBox {
+  transform:
+    perspective(1800px)
+    rotateY(-140deg);
+
+  pointer-events: none;
+}
+
+/* Imagen de portada */
+
+.imgBox img {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  display: block;
+
+  border-radius: 7px;
+
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+
+/* =========================================
+   REVERSO DE LA PORTADA
+========================================= */
+
+.bark {
+  position: absolute;
+  inset: 0;
+
+  opacity: 0;
+
+  transform: rotateY(180deg);
+
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+
+  background:
+    linear-gradient(
+      145deg,
+      #03132d,
+      #0b428f,
+      #061d43
+    );
+
+  transition: opacity 0.45s ease;
+}
+
+.card.open .bark {
+  opacity: 1;
+}
+
+
+/* =========================================
+   LIBRO INTERIOR
+========================================= */
+
+.book-content {
+  position: absolute;
+  inset: 0;
+
+  overflow: hidden;
+
+  border-radius: 7px;
+  background: transparent;
+}
+
+
+/* =========================================
+   PAGINAS
+========================================= */
+
+.page {
+  position: absolute;
+  inset: 0;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transform:
+    translateX(45px)
+    scale(0.985);
+
+  transition:
+    opacity 0.42s ease,
+    transform 0.48s ease,
+    visibility 0s linear 0.48s;
+
+  background-color: transparent;
+}
+
+.page.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+
+  transform:
+    translateX(0)
+    scale(1);
+
+  transition:
+    opacity 0.42s ease,
+    transform 0.48s ease,
+    visibility 0s;
+}
+
+.page.exit-left {
+  transform:
+    translateX(-45px)
+    scale(0.985);
+}
+
+
+/* =========================================
+   FONDOS DE LAS PAGINAS
+========================================= */
+
+.page-1 {
+  background:
+    url('./images/fondo1.png')
+    center center / cover
+    no-repeat;
+}
+
+.page-2 {
+  background:
+    url('./images/fondo2.png')
+    center center / cover
+    no-repeat;
+}
+
+.page-3 {
+  background:
+    url('./images/fondo3.png')
+    center center / cover
+    no-repeat;
+}
+
+
+/* =========================================
+   CAPA OSCURA / DEGRADADO
+========================================= */
+
+.page-overlay {
+  position: absolute;
+  inset: 0;
+
+  z-index: 1;
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(2,10,25,0.20) 0%,
+      rgba(4,20,47,0.36) 40%,
+      rgba(2,13,32,0.66) 100%
+    );
+}
+
+
+/* =========================================
+   CONTENIDO
+========================================= */
+
+.page-content {
+  position: relative;
+  z-index: 3;
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+  padding: 30px 18px 70px;
+}
+
+
+/* =========================================
+   CONTENIDO FLOTANTE
+   SIN FONDO NI BORDES
+========================================= */
+
+.floating-card {
+  position: relative;
+  z-index: 4;
+
+  width: 96%;
+
+  padding: 0;
+  margin: 0;
+
+  color: var(--text-light);
+  text-align: center;
+
+  background: transparent;
+  border: none;
+  border-radius: 0;
+
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+
+  box-shadow: none;
+
+  animation:
+    floatingPanel 4s ease-in-out infinite;
+}
+
+
+/* =========================================
+   MOVIMIENTO FLOTANTE
+========================================= */
+
+@keyframes floatingPanel {
+  0%,
+  100% {
+    transform: translateY(-5px);
+  }
+
+  50% {
+    transform: translateY(5px);
+  }
+}
+
+
+/* =========================================
+   SOMBRA DEL TEXTO
+========================================= */
+
+.floating-card h1,
+.floating-card h2,
+.floating-card p,
+.floating-card strong,
+.floating-card span {
+  text-shadow:
+    0 2px 4px rgba(0,0,0,0.95),
+    0 5px 14px rgba(0,0,0,0.72);
+}
+
+
+/* =========================================
+   ETIQUETAS TIPO COMIC
+========================================= */
+
+.small-label {
+  display: inline-block;
+
+  margin: 0 0 20px;
+  padding: 0;
+
+  color: var(--blue-light);
+
+  background: transparent;
+  border: none;
+
+  font-family: 'Luckiest Guy', cursive;
+  font-size: 15px;
+  font-weight: 400;
+
+  letter-spacing: 2px;
+  line-height: 1.2;
+
+  text-transform: uppercase;
+}
+
+
+/* =========================================
+   PAGINA 1
+========================================= */
+
+.main-title {
+  margin: 0 0 18px;
+
+  color: #ffffff;
+
+  font-family: 'Bangers', cursive;
+
+  font-size: clamp(42px,12vw,54px);
+  font-weight: 400;
+
+  line-height: 0.95;
+  letter-spacing: 2px;
+
+  text-transform: uppercase;
+
+  text-shadow:
+    2px 2px 0 #0c4ca5,
+    4px 4px 0 rgba(0,0,0,0.65),
+    0 8px 20px rgba(0,0,0,0.65);
+}
+
+
+/* SUBTITULO */
+
+.subtitle {
+  margin: 0 0 34px;
+
+  color: #d7eaff;
+
+  font-family: 'Luckiest Guy', cursive;
+  font-size: 19px;
+  font-weight: 400;
+
+  line-height: 1.3;
+  letter-spacing: 0.5px;
+}
+
+
+/* TEXTO INTRODUCTORIO */
+
+.intro-text {
+  margin: 0 0 10px;
+
+  color: #ffffff;
+
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+
+  line-height: 1.35;
+}
+
+
+/* NOMBRE */
+
+.birthday-name {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-family: 'Bangers', cursive;
+
+  font-size: clamp(36px,10vw,46px);
+  font-weight: 400;
+
+  line-height: 1;
+  letter-spacing: 1.5px;
+
+  text-transform: uppercase;
+
+  text-shadow:
+    2px 2px 0 #1254b5,
+    4px 4px 0 rgba(0,0,0,0.55),
+    0 8px 20px rgba(0,0,0,0.60);
+}
+
+
+/* =========================================
+   TITULOS PAGINAS 2 Y 3
+========================================= */
+
+.section-title {
+  margin: 0 0 32px;
+
+  color: #ffffff;
+
+  font-family: 'Bangers', cursive;
+
+  font-size: clamp(39px,10vw,48px);
+  font-weight: 400;
+
+  line-height: 1;
+  letter-spacing: 1.5px;
+
+  text-transform: uppercase;
+
+  text-shadow:
+    2px 2px 0 #0d4ca5,
+    4px 4px 0 rgba(0,0,0,0.60),
+    0 8px 20px rgba(0,0,0,0.60);
+}
+
+
+/* =========================================
+   DATOS DEL EVENTO
+========================================= */
+
+.event-data {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+
+/* FILAS TRANSPARENTES */
+
+.event-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 7px;
+
+  padding: 0;
+  margin: 0;
+
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+
+/* FECHA / HORA / LUGAR */
+
+.event-label {
+  color: #9ccaff;
+
+  font-family: 'Luckiest Guy', cursive;
+  font-size: 14px;
+  font-weight: 400;
+
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+
+/* INFORMACION */
+
+.event-row strong {
+  color: #ffffff;
+
+  font-family: 'Nunito Sans', Arial, sans-serif;
+
+  font-size: 19px;
+  font-weight: 900;
+
+  line-height: 1.25;
+}
+
+
+/* =========================================
+   MENSAJE PAGINA 2
+========================================= */
+
+.mission-message {
+  max-width: 270px;
+
+  margin: 0 auto;
+
+  color: #ffffff;
+
+  font-family: 'Nunito Sans', Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+
+  line-height: 1.4;
+}
+
+
+/* =========================================
+   PAGINA 3
+========================================= */
+
+.final-text {
+  max-width: 270px;
+
+  margin: 0 auto 30px;
+
+  color: #ffffff;
+
+  font-family: 'Nunito Sans', Arial, sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+
+  line-height: 1.4;
+}
+
+
+/* =========================================
+   BOTONES
+========================================= */
+
+.action-btn {
+  width: 100%;
+  max-width: 270px;
+  min-height: 50px;
+
+  margin: 9px auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 10px 14px;
+
+  border-radius: 11px;
+
+  font-family: 'Luckiest Guy', cursive;
+  font-size: 13px;
+  font-weight: 400;
+
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+
+  text-decoration: none;
+  text-shadow: none;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+/* CONFIRMAR ASISTENCIA */
+
+.confirm-btn {
+  color: #06295f;
+  background: #ffffff;
+
+  border: 2px solid #ffffff;
+
+  box-shadow:
+    0 7px 18px rgba(0,0,0,0.35);
+}
+
+
+/* GOOGLE CALENDAR */
+
+.calendar-btn {
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #1769d5,
+      #0b418c
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.35);
+
+  box-shadow:
+    0 7px 18px rgba(0,0,0,0.30);
+}
+
+
+/* MAPA */
+
+.maps-btn {
+  color: #ffffff;
+
+  background: rgba(4,25,60,0.58);
+
+  border:
+    1px solid rgba(255,255,255,0.45);
+
+  box-shadow:
+    0 7px 18px rgba(0,0,0,0.28);
+}
+
+.action-btn:active {
+  transform: scale(0.96);
+}
+
+
+/* =========================================
+   PADRES
+========================================= */
+
+.parents {
+  margin-top: 31px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 6px;
+
+  color: #ffffff;
+
+  font-family: 'Nunito Sans', Arial, sans-serif;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  line-height: 1.35;
+}
+
+.parents strong {
+  color: #ffffff;
+
+  font-family: 'Luckiest Guy', cursive;
+
+  font-size: 16px;
+  font-weight: 400;
+
+  letter-spacing: 0.5px;
+}
+
+
+/* =========================================
+   ICONO DESLIZAR
+========================================= */
+
+.swipe-container {
+  position: absolute;
+
+  left: 50%;
+  bottom: 18px;
+
+  z-index: 20;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 1px;
+
+  transform: translateX(-50%);
+
+  pointer-events: none;
+}
+
+.swipe-hint {
+  width: 48px;
+  height: 48px;
+
+  object-fit: contain;
+
+  filter:
+    drop-shadow(
+      0 3px 7px rgba(0,0,0,0.75)
+    );
+
+  animation:
+    swipeAttention 1.25s ease-in-out infinite;
+}
+
+.swipe-text {
+  color: #ffffff;
+
+  font-family: 'Luckiest Guy', cursive;
+
+  font-size: 8px;
+  letter-spacing: 2px;
+
+  text-shadow:
+    0 2px 5px rgba(0,0,0,0.85);
+
+  animation:
+    swipeTextBlink 1.25s ease-in-out infinite;
+}
+
+
+/* =========================================
+   ANIMACION DESLIZAR
+========================================= */
+
+@keyframes swipeAttention {
+  0% {
+    opacity: 0.30;
+    transform: translateX(-8px) scale(0.90);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateX(8px) scale(1.07);
+  }
+
+  100% {
+    opacity: 0.30;
+    transform: translateX(-8px) scale(0.90);
+  }
+}
+
+@keyframes swipeTextBlink {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+
+/* =========================================
+   MENSAJE BAJO LA TARJETA
+========================================= */
+
+.card-hint {
+  margin: 15px 0 0;
+  padding: 8px 15px;
+
+  color: rgba(255,255,255,0.86);
+  background: rgba(3,15,35,0.68);
+
+  border: none;
+  border-radius: 20px;
+
+  font-family: 'Nunito Sans', Arial, sans-serif;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  text-align: center;
+
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+
+/* =========================================
+   PAGINA 4 - VIDEO
+========================================= */
+
+.page-video {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+
+  background: #000000;
+}
+
+.video-container {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  background: #000000;
+}
+
+#birthdayVideo {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+
+  background: #000000;
+}
+
+
+/* BOTON ALTERNATIVO */
+
+.video-play-btn {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  z-index: 10;
+
+  transform: translate(-50%, -50%);
+
+  width: 82%;
+  padding: 17px 12px;
+
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #1769d5,
+      #06295f
+    );
+
+  border: 2px solid #ffffff;
+  border-radius: 12px;
+
+  font-family: 'Luckiest Guy', cursive;
+
+  font-size: 16px;
+  letter-spacing: 0.5px;
+
+  text-align: center;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 25px rgba(0,0,0,0.65);
+}
+
+.video-play-btn[hidden] {
+  display: none !important;
+}
+
+.video-play-btn:active {
+  transform:
+    translate(-50%, -50%)
+    scale(0.96);
+}
+
+
+/* =========================================
+   CELULARES
+========================================= */
+
+@media (max-width: 480px) {
+
+  body {
+    padding: 8px 5px;
+  }
+
+  .card {
+    --card-width: min(87vw,325px);
+    --card-height: min(154vw,575px);
+  }
+
+  .page-content {
+    padding: 30px 17px 70px;
+  }
+}
+
+
+/* =========================================
+   CELULARES PEQUEÑOS
+========================================= */
+
+@media (max-width: 380px) {
+
+  .card {
+    --card-width: min(87vw,300px);
+    --card-height: min(154vw,530px);
+  }
+
+  .main-title {
+    font-size: 40px;
+  }
+
+  .birthday-name {
+    font-size: 35px;
+  }
+
+  .section-title {
+    font-size: 37px;
+  }
+
+  .subtitle {
+    font-size: 17px;
+  }
+
+  .intro-text {
+    font-size: 16px;
+  }
+
+  .event-row strong {
+    font-size: 17px;
+  }
+
+  .mission-message,
+  .final-text {
+    font-size: 16px;
+  }
+
+  .action-btn {
+    min-height: 47px;
+    font-size: 12px;
+  }
+
+  .parents {
+    font-size: 13px;
+  }
+
+  .parents strong {
+    font-size: 14px;
+  }
+}
+
+
+/* =========================================
+   TABLETS / PANTALLAS MAYORES
+========================================= */
+
+@media (min-width: 600px) {
+
+  .card {
+    --card-width: 350px;
+    --card-height: 610px;
+  }
+
+  .main-title {
+    font-size: 54px;
+  }
+
+  .birthday-name {
+    font-size: 46px;
+  }
+}
+
+
+/* =========================================
+   REDUCIR MOVIMIENTO
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .card,
+  .imgBox,
+  .page,
+  .floating-card,
+  .swipe-hint,
+  .swipe-text {
+    animation: none;
+    transition-duration: 0.01ms;
+  }
+}
